@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+
+  todo-api:
+    container_name: todo-api
+    build:
+      context: ./todo-api
+      dockerfile: Dockerfile.dev
+    image: todo-api:1.0
+    command: sh /app/start.sh
+    ports:
+      - 3000:3000
+    environment:
+      - POSTGRES_HOST=todo-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DATABASE=todo
+      - POSTGRES_USER=todo
+      - POSTGRES_PASSWORD=todo1234
+      - REDIS_HOST=todo-redis
+      - REDIS_PORT=6379
+      - ELASTICSEARCH_HOST=todo-elastic
+      - ELASTICSEARCH_PORT=9200
+    volumes:
+      - /app/node_modules
+
+
+  todo-view:
+    container_name: todo-view
+    build:
+      context: ./todo-view
+      dockerfile: Dockerfile.dev
+    image: todo-view:1.0
+    ports:
+      - 4200:4200
+    volumes:
+      - ${PWD}/todo-view:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - todo-api
+
+
+  todo-proxy:
+    container_name: todo-proxy
+    build:
+      context: ./todo-proxy
+      dockerfile: Dockerfile.dev
+    image: todo-proxy:1.0
+    ports:
+      - 8080:80
+    depends_on:
+      - todo-api
+      - todo-view
+
