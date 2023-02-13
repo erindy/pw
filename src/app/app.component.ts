@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   includeLetters = false;
-  useNumbers = false;
-  useSymbols = false;
+  includeNumbers = false;
+  includeSymbols = false;
 
   password = '';
   length = 0;
@@ -27,11 +27,11 @@ export class AppComponent {
       validChars += letters;
        
     } 
-    if (this.useNumbers){
+    if (this.includeNumbers){
       validChars += numbers;
     }
 
-    if (this.useSymbols){
+    if (this.includeSymbols){
       validChars += symbols;
     }
 
@@ -47,7 +47,7 @@ export class AppComponent {
   }
 
   onChangeUseSymbols() {
-    this.useSymbols = !this.useSymbols;
+    this.includeSymbols = !this.includeSymbols;
   }
 
   onChangeUseLetters() {
@@ -55,7 +55,7 @@ export class AppComponent {
   }
 
   onChangeUseNumbers() {
-    this.useNumbers = !this.useNumbers;
+    this.includeNumbers = !this.includeNumbers;
   }
 
   onChangeLength(event: Event) {
